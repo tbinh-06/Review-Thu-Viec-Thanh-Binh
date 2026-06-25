@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tổng kết 2 tháng thử việc — Bình</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8f7f5;--surface:#fff;--bg2:#f1efe8;--t:#1a1a18;--ts:#6b6960;--b:#e5e3dc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--t);font-size:14px;line-height:1.6;min-height:100vh}
+.shell{max-width:860px;margin:0 auto;padding:24px 20px 60px}
+.page{display:none}
+.page.active{display:block}
+
+/* MIND MAP */
+.mmap-wrap{position:relative;width:100%;height:600px;margin-top:10px}
+.mmap-wrap svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.node-btn{position:absolute;transform:translate(-50%,-50%);cursor:pointer;border:none;font-family:inherit;transition:all .15s;text-align:center;line-height:1.3}
+.center-node{background:#185fa5;color:#fff;border-radius:14px;padding:18px 24px;font-size:16px;font-weight:700;width:160px;box-shadow:0 2px 12px rgba(24,95,165,.25)}
+.branch-node{background:var(--surface);border:1.5px solid;border-radius:10px;padding:11px 15px;font-size:13px;font-weight:600;width:150px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.branch-node:hover,.center-node:hover{filter:brightness(.95);transform:translate(-50%,-50%) scale(1.04)}
+.bs{font-size:11px;font-weight:400;display:block;margin-top:2px;opacity:.85}
+.b-tl{border-color:#378add;color:#0c447c} .b-amber{border-color:#ba7517;color:#633806}
+.b-teal{border-color:#1d9e75;color:#085041} .b-purple{border-color:#7f77dd;color:#3c3489}
+.b-coral{border-color:#d85a30;color:#712b13} .b-green{border-color:#639922;color:#27500a}
+.b-gray{border-color:#888780;color:#444441}
+
+.map-hero{text-align:center;margin-bottom:8px}
+.map-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#185fa5;margin-bottom:6px}
+.map-title{font-size:24px;font-weight:800}
+.map-sub{font-size:13px;color:var(--ts);margin-top:4px}
+.map-chips{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.chip{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.chip-g{background:#eaf3de;color:#27500a} .chip-b{background:#e6f1fb;color:#0c447c}
+.map-hint{text-align:center;font-size:12px;color:#9b9890;margin-top:6px}
+
+/* DETAIL PAGES */
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--ts);cursor:pointer;font-family:inherit;margin-bottom:20px;transition:background .12s}
+.back-btn:hover{background:var(--bg2)}
+.hero-h{font-size:20px;font-weight:700;margin-bottom:4px}
+.hero-sub{font-size:13px;color:var(--ts);margin-bottom:20px}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:20px}
+.stat{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:14px;text-align:center}
+.stat-v{font-size:22px;font-weight:800}
+.stat-l{font-size:11px;color:var(--ts);margin-top:3px}
+.sv-b{color:#185fa5}.sv-g{color:#3b6d11}.sv-a{color:#854f0b}.sv-t{color:#0f6e56}.sv-p{color:#534ab7}
+
+.tl{position:relative;padding-left:18px}
+.tl::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:1.5px;background:var(--b)}
+.tl-item{position:relative;padding-bottom:20px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-16px;top:4px;width:11px;height:11px;border-radius:50%;border:2px solid var(--b);background:var(--bg)}
+.d-b{border-color:#378add;background:#e6f1fb}.d-g{border-color:#639922;background:#eaf3de}.d-a{border-color:#ba7517;background:#faeeda}
+.tl-wk{font-size:10px;font-weight:700;color:#9b9890;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.tl-ti{font-size:14px;font-weight:700;margin-bottom:3px}
+.tl-bd{font-size:12.5px;color:var(--ts);line-height:1.6}
+.tag{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--bg2);color:#5f5e5a;display:inline-block;margin:4px 3px 0 0}
+.pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block}
+.p-b{background:#e6f1fb;color:#0c447c}.p-g{background:#eaf3de;color:#27500a}.p-a{background:#faeeda;color:#633806}
+.p-t{background:#e1f5ee;color:#085041}.p-p{background:#eeedfe;color:#3c3489}.p-c{background:#faece7;color:#712b13}.p-gr{background:#f1efe8;color:#444441}
+
+.card{background:var(--surface);border:0.5px solid var(--b);border-radius:10px;padding:18px;margin-bottom:12px}
+.card-ti{font-size:12px;font-weight:700;color:#9b9890;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.vacs-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vl{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.vl li{font-size:12.5px;color:var(--ts);padding-left:14px;position:relative;line-height:1.5}
+.vl li::before{content:'▸';position:absolute;left:0;color:#378add;font-size:10px;top:3px}
+
+.case-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.cc:hover{border-color:#378add;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.cc.won{border-color:#639922}
+.cc-num{font-size:10px;font-weight:700;color:#9b9890;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.won-b{font-size:10px;font-weight:700;background:#eaf3de;color:#27500a;padding:1px 7px;border-radius:20px}
+.cc-name{font-size:13px;font-weight:700;margin-bottom:2px}
+.cc-type{font-size:11.5px;color:var(--ts);margin-bottom:8px}
+.cc-items{list-style:none;padding:0}
+.cc-items li{font-size:11.5px;color:var(--ts);padding:3px 0;border-bottom:0.5px solid var(--b);display:flex;gap:5px}
+.cc-items li:last-child{border-bottom:none}
+.cc-items li::before{content:'→';color:#378add;font-size:10px;flex-shrink:0;margin-top:2px}
+.cc-ft{margin-top:8px;display:flex;gap:5px;flex-wrap:wrap}
+
+.cd-header{background:var(--bg2);border-radius:8px;padding:16px 18px;margin-bottom:16px}
+.cd-name{font-size:18px;font-weight:700;margin-bottom:5px}
+.cd-meta{font-size:12.5px;color:var(--ts)}
+.action-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.action-list li{font-size:12.5px;color:var(--ts);padding:10px 14px 10px 32px;background:var(--surface);border:0.5px solid var(--b);border-radius:7px;line-height:1.55;position:relative}
+.action-list li::before{content:'→';position:absolute;left:12px;top:10px;color:#378add;font-weight:600}
+
+.hrs-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.hb{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:16px;text-align:center}
+.hv{font-size:26px;font-weight:800}
+.hl{font-size:11px;color:var(--ts);margin-top:3px;line-height:1.4}
+.mt{width:100%;border-collapse:collapse;font-size:12px}
+.mt th{text-align:left;padding:7px 10px;color:#9b9890;font-weight:600;border-bottom:0.5px solid var(--b);background:#faf9f7}
+.mt td{padding:7px 10px;border-bottom:0.5px solid var(--b);vertical-align:top;color:var(--ts)}
+.mt td:first-child{color:var(--t);font-weight:500}
+.mt tr:last-child td{border-bottom:none}
+
+.h3-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.goal-c{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:16px;border-top:3px solid}
+.g-hor{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.g-ti{font-size:13px;font-weight:700;margin-bottom:6px}
+.g-bd{font-size:12px;color:var(--ts);line-height:1.6}
+.split-bar{display:flex;border-radius:6px;overflow:hidden;height:8px;margin:10px 0 5px}
+.split-labels{display:flex;justify-content:space-between;font-size:11px}
+
+.rv-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ch-item{margin-bottom:13px}
+.ch-ti{font-size:12.5px;font-weight:700;margin-bottom:3px}
+.ch-bd{font-size:12px;color:var(--ts);line-height:1.6}
+.ac-item{display:flex;gap:9px;margin-bottom:11px;align-items:flex-start}
+.ac-ic{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:700}
+.ac-tx{font-size:12px;color:var(--ts);line-height:1.6}
+.ac-tx strong{color:var(--t)}
+
+.life-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lc{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:16px}
+.lc-ico{font-size:22px;margin-bottom:8px}
+.lc-ti{font-size:13px;font-weight:700;margin-bottom:5px}
+.lc-bd{font-size:12px;color:var(--ts);line-height:1.6}
+.quote-box{background:#e6f1fb;border:0.5px solid #378add;border-radius:8px;padding:16px;margin-top:12px;font-size:13px;color:#042c53;line-height:1.7;font-style:italic}
+
+/* CULTURE */
+.cv-list{display:flex;flex-direction:column;gap:10px}
+.cv-card{margin-bottom:0;display:flex;flex-direction:column}
+.cv-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cv-num{width:24px;height:24px;border-radius:6px;background:#c0428a;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cv-name{font-size:14px;font-weight:700}
+.cv-body{font-size:12.5px;color:var(--ts);line-height:1.65}
+
+/* PROPOSAL */
+.propose-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.propose-l{font-size:10px;font-weight:700;color:#3b6d11;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.propose-v{font-size:14px;font-weight:700}
+
+/* RESOURCES */
+.res-grid{display:flex;flex-direction:column;gap:10px}
+.res-card{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:14px;display:flex;gap:12px;align-items:flex-start}
+.res-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.res-ti{font-size:13px;font-weight:700;margin-bottom:3px}
+.res-bd{font-size:12px;color:var(--ts);line-height:1.55}
+@media(max-width:560px){.propose-row{grid-template-columns:1fr;gap:10px}}
+.divider{height:0.5px;background:var(--b);margin:12px 0}
+
+/* MIND MAP — TREE (rẽ nhánh xuống) */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.ov-item{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:14px 16px}
+.ov-n{font-size:12px;font-weight:700;color:#185fa5;margin-bottom:4px}
+.ov-d{font-size:12.5px;color:var(--ts);line-height:1.55}
+
+.tree-wrap{padding:8px 0 12px}
+.tree-root{display:flex;justify-content:center;position:relative;padding-bottom:26px}
+.tree-root::after{content:'';position:absolute;left:50%;bottom:0;width:1.5px;height:26px;background:#d0cec5}
+.tree-children{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;position:relative;padding-top:14px}
+.tree-children::before{content:'';position:absolute;top:0;left:7%;right:7%;height:1.5px;background:#d0cec5}
+.tree-children .tnode{position:relative}
+.tree-children .tnode::before{content:'';position:absolute;top:-14px;left:50%;width:1.5px;height:14px;background:#d0cec5}
+.tnode{background:var(--surface);border:1.5px solid;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;line-height:1.3;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.tnode:hover{filter:brightness(.96);transform:translateY(-2px)}
+.troot{background:#185fa5;color:#fff;border-color:#185fa5;font-size:15px;font-weight:700;padding:14px 26px;box-shadow:0 2px 10px rgba(24,95,165,.22);cursor:default}
+.troot:hover{transform:none;filter:none}
+.tns{display:block;font-size:11px;font-weight:400;margin-top:2px;opacity:.85}
+.t-tl{border-color:#378add;color:#0c447c} .t-amber{border-color:#ba7517;color:#633806}
+.t-teal{border-color:#1d9e75;color:#085041} .t-purple{border-color:#7f77dd;color:#3c3489}
+.t-coral{border-color:#d85a30;color:#712b13} .t-green{border-color:#639922;color:#27500a}
+.t-gray{border-color:#888780;color:#444441}
+.t-pink{border-color:#c0428a;color:#8a2560}
+
+.intro-hero{padding:28px 0 16px;border-bottom:0.5px solid var(--b)}
+.intro-title{font-size:28px;font-weight:800;line-height:1.15;margin-bottom:8px}
+.intro-sub{font-size:14px;color:var(--ts)}
+@media(max-width:560px){
+  .intro-title{font-size:23px}
+  .ov-grid{grid-template-columns:1fr}
+  .tree-children{gap:8px}
+  .tnode{font-size:12px;padding:9px 12px}
+}
+@media(max-width:560px){
+  .vacs-2,.case-g,.h3-row,.rv-2,.hrs-3,.life-2{grid-template-columns:1fr}
+  .mmap-wrap{height:520px}
+  .branch-node{width:120px;font-size:12px;padding:8px 10px}
+  .center-node{width:130px;font-size:14px;padding:14px 16px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ═══ TRANG TỔNG QUAN + MIND MAP CÂY ═══ -->
+<div class="page active" id="pg-intro">
+  <div class="intro-hero">
+    <div class="map-eyebrow">DA External · GROWLY × Base.vn</div>
+    <h1 class="intro-title">Tổng kết 2 tháng thử việc</h1>
+    <div class="intro-sub">Bình · 04/05/2026 → 03/07/2026 · Phòng Dữ liệu</div>
+    <div class="map-chips" style="justify-content:flex-start;margin-top:14px">
+      <span class="chip chip-g">Sapoche WON</span>
+      <span class="chip chip-b">7 case active</span>
+      <span class="chip" style="background:#faeeda;color:#633806">456.5h tổng giờ</span>
+    </div>
+  </div>
+
+  <div class="ov-grid">
+    <div class="ov-item"><div class="ov-n">3 tuần đầu</div><div class="ov-d">Onboard 7 sản phẩm Base, dựng báo cáo Power BI đầu tiên, đạt 85% bài test.</div></div>
+    <div class="ov-item"><div class="ov-n">Tuần 4</div><div class="ov-d">Nhận bàn giao VACs giữa chừng. Bắt đầu chạy song song DA + pre-sales.</div></div>
+    <div class="ov-item"><div class="ov-n">Tháng 6</div><div class="ov-d">10 demo qua 5 tuần, phủ 6 ngành. Sapoche close — case đầu tiên về tiền.</div></div>
+    <div class="ov-item"><div class="ov-n">Định hướng</div><div class="ov-d">Ngắn hạn: lặp win case. Dài hạn: tự chạy full SE. Trước mắt 50% DA — 50% SE.</div></div>
+  </div>
+
+  <div class="map-hint" style="margin:24px 0 4px">Click vào từng nhánh để xem chi tiết</div>
+  <div class="tree-wrap" id="tree">
+    <div class="tree-root">
+      <button class="tnode troot">2 tháng thử việc</button>
+    </div>
+    <div class="tree-children">
+      <button class="tnode t-tl"     data-go="pg-tl">Hành trình<span class="tns">4 giai đoạn</span></button>
+      <button class="tnode t-amber"  data-go="pg-vacs">VACs<span class="tns">24h bảo trì</span></button>
+      <button class="tnode t-teal"   data-go="pg-cases">10 Demo<span class="tns">1 WON · 7 active</span></button>
+      <button class="tnode t-purple" data-go="pg-hrs">Giờ làm<span class="tns">456.5h</span></button>
+      <button class="tnode t-coral"  data-go="pg-review">Kết quả & Review<span class="tns">KPI · Khó khăn · Thành tựu</span></button>
+      <button class="tnode t-pink"   data-go="pg-culture">Văn hóa<span class="tns">5 core value</span></button>
+      <button class="tnode t-green"  data-go="pg-goals">Mục tiêu & Đề xuất<span class="tns">Lên chính thức · 10tr5</span></button>
+      <button class="tnode t-gray"   data-go="pg-life">Đời sống<span class="tns">Cầu lông · Bonding</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HÀNH TRÌNH ═══ -->
+<div class="page" id="pg-tl">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Hành trình theo tuần</div>
+  <div class="hero-sub">04/05/2026 → 03/07/2026 · 53 ngày làm (T2–T7)</div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-v sv-b">53</div><div class="stat-l">Ngày làm</div></div>
+    <div class="stat"><div class="stat-v sv-g">4</div><div class="stat-l">Giai đoạn</div></div>
+    <div class="stat"><div class="stat-v sv-a">W4</div><div class="stat-l">Jump in dự án</div></div>
+  </div>
+  <div class="card">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W1 · 4–9/5</div><div class="tl-ti">Onboard & nền tảng</div><div class="tl-bd">Thiết lập môi trường (Power BI, Ultra, TeamViewer). Tự đọc 7 sản phẩm Base — Wework, Timeoff, HRM, Service, Request, Hiring, Account — nắm data model, văn hóa team, cơ chế com.</div><div><span class="tag">7 Base Apps</span><span class="tag">Data Model</span><span class="tag">Onboard</span></div></div>
+      <div class="tl-item"><div class="tl-dot d-g"></div><div class="tl-wk">W2–W3 · 11–22/5</div><div class="tl-ti">Bài toán Hiệu suất Công việc</div><div class="tl-bd">Data mapping → Canva process map → Blueprint báo cáo → Trình bày insight → Power BI hoàn chỉnh. Bài test đánh giá đạt 85%.</div><div><span class="tag">Power BI</span><span class="tag">Blueprint</span><span class="pill p-g">85% test</span></div></div>
+      <div class="tl-item"><div class="tl-dot d-a"></div><div class="tl-wk">W4 · 25–30/5</div><div class="tl-ti">Jump in — Nhận VACs & demo đầu tiên</div><div class="tl-bd">Bàn giao VACs (Hudland, VCAS). Đọc blueprint, map dữ liệu WeWork/HRM/TimeOff/BigQuery/PBI, nắm công thức. Song song bắt đầu ECV & AHS.</div><div><span class="tag">VACs</span><span class="tag">ECV</span><span class="tag">AHS</span></div></div>
+      <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W5–W9 · 1–25/6</div><div class="tl-ti">Triển khai dồn dập — 8 demo + VACs live</div><div class="tl-bd">Cường độ cao nhất: Sapoche, Moonlight, PCES, Nhậu Tự Do, Quán Nhỏ, KOMEX, VML, Siêm Riệp — song song xử lý VACs thực tế (mismatch, query, đối soát BigQuery/PBI).</div><div><span class="tag">HTML+Chart.js</span><span class="tag">n8n</span><span class="tag">Base.vn API</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VACs ═══ -->
+<div class="page" id="pg-vacs">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Dự án VACs — Bảo trì live</div>
+  <div class="hero-sub">Tiếp nhận giữa kỳ thử việc · 24 giờ bảo trì · xử lý song song pre-sales</div>
+  <div class="vacs-2">
+    <div class="card"><div class="card-ti">Kỹ thuật & Hệ thống</div><ul class="vl">
+      <li>Bổ sung Sản phẩm, Địa danh, PM, văn phòng DNA/HUE/HCM vào dữ liệu dự án</li>
+      <li>Hoàn thiện chỉ số: Giờ mục tiêu, Hành chính, OT, Total, Chênh lệch, 12 nhóm OT chi tiết</li>
+      <li>Chuẩn hóa định dạng số, giao diện bảng và chức năng Export Mode</li>
+      <li>Rà soát logic nguồn: task cha–con, Tag H1/H2/H3, Tag OT, Time Off, giờ mục tiêu</li>
+      <li>Build query đối soát: WeWork ↔ HRM ↔ Time Off ↔ BigQuery ↔ Power BI</li>
+    </ul></div>
+    <div class="card"><div class="card-ti">Làm việc với khách hàng</div><ul class="vl">
+      <li>Tiếp nhận, tổng hợp và làm rõ từng yêu cầu thay đổi báo cáo</li>
+      <li>Kiểm tra trực tiếp các trường hợp khách phản ánh sai hoặc thiếu dữ liệu</li>
+      <li>Giải thích nguyên nhân từ quy trình nhập liệu và logic hệ thống</li>
+      <li>Đề xuất phương án xử lý, cập nhật báo cáo, phản hồi kết quả</li>
+      <li>Hướng dẫn chuẩn hóa nhập liệu: thời gian, Tag, task con, thông tin dự án</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ═══ 10 DEMO ═══ -->
+<div class="page" id="pg-cases">
+  <button class="back-btn" id="cases-back" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div id="cases-list">
+    <div class="hero-h">10 Demo báo cáo Pre-sales</div>
+    <div class="hero-sub">Click vào từng case để xem chi tiết action đã làm</div>
+    <div class="case-g" id="case-grid"></div>
+  </div>
+  <div id="case-detail" style="display:none"></div>
+</div>
+
+<!-- ═══ GIỜ LÀM ═══ -->
+<div class="page" id="pg-hrs">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Tổng kết giờ làm việc</div>
+  <div class="hero-sub">8h30–18h00 · nghỉ trưa 1h30 · T2–T7 · OT = sau 18h hoặc Chủ nhật</div>
+  <div class="hrs-3">
+    <div class="hb"><div class="hv sv-b">424h</div><div class="hl">Hành chính<br>53 ngày × 8h</div></div>
+    <div class="hb" style="border-color:#ba7517"><div class="hv sv-a">32.5h</div><div class="hl">Tăng ca (OT)<br>Meeting 9h · Thực tế 23.5h</div></div>
+    <div class="hb" style="border-color:#639922"><div class="hv sv-g">456.5h</div><div class="hl">Tổng thực tế<br>≈ 57 ngày công</div></div>
+  </div>
+  <div class="card-ti">OT Meeting — Google Calendar</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+    <table class="mt"><thead><tr><th>Ngày</th><th>Event</th><th style="text-align:right">Giờ</th></tr></thead><tbody>
+      <tr><td>T7 6/6</td><td>ECV × Base Meeting 04 Khảo sát công lượng</td><td style="text-align:right">2.5h</td></tr>
+      <tr><td>T7 6/6</td><td>Catchup đêm (10–11PM)</td><td style="text-align:right">1h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+      <tr><td>CN 14/6</td><td>Product Demo + Moonlight catchup research</td><td style="text-align:right">2h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
+      <tr><td>T3–T6 16–19/6</td><td>Thanh Bình/Yến · Demo Session 2 · Demo T6</td><td style="text-align:right">3h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+      <tr><td>T7 20/6</td><td>Siêm Riệp Truy xuất nguồn gốc (9:30AM)</td><td style="text-align:right">1.5h</td></tr>
+      <tr><td>CN 21/6</td><td>Catchup Việt Minh Long (5:30PM)</td><td style="text-align:right">1h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
+      <tr><td>T5–T6 25–26/6</td><td>Product Demo · Siêm Riệp demo nội bộ đêm</td><td style="text-align:right">2h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+      <tr><td>T7 27/6</td><td>ECV × Base Meeting 05 Thống nhất giải pháp</td><td style="text-align:right">2h</td></tr>
+    </tbody></table>
+  </div>
+  <div class="card-ti">OT Làm việc thực tế — Timestamp lịch sử chat</div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="mt"><thead><tr><th>Case</th><th>Dấu hiệu OT</th><th style="text-align:right">Ước tính</th></tr></thead><tbody>
+      <tr><td>Siêm Riệp</td><td>Debug n8n đến 5AM (timestamp 05:01+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
+      <tr><td>Sapoche</td><td>Nhiều session debug webhook tối muộn</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
+      <tr><td>Moonlight</td><td>Catchup research 9–10PM</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+      <tr><td>PCES</td><td>Session kéo dài đến 2AM (02:22+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+      <tr><td>VML</td><td>Build dashboard đêm (02:57+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+      <tr><td>Quán Nhỏ</td><td>Build đêm muộn (03:42+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2.5h</td></tr>
+      <tr><td>KOMEX</td><td>Build dashboard tối muộn (01:54+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
+      <tr><td>Nhậu Tự Do</td><td>Refine UI buổi tối nhiều vòng lặp</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ═══ KẾT QUẢ & REVIEW ═══ -->
+<div class="page" id="pg-review">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Kết quả & Review thử việc</div>
+  <div class="hero-sub">Mức độ hoàn thành · Khó khăn · Thành tựu</div>
+
+  <div class="card-ti">Mức độ hoàn thành công việc</div>
+  <div class="card" style="background:#eaf3de;border-color:#639922;margin-bottom:14px">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:24px">✓</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#27500a;margin-bottom:4px">Hoàn thành sớm hơn timeline — vượt chỉ tiêu số lượng</div>
+        <div style="font-size:12.5px;color:#3b6d11;line-height:1.7">Không có KPI con số cụ thể, chỉ có timeline. Thực tế <strong>hoàn thành sớm hơn timeline đề ra</strong>. Riêng số lượng case SE: timeline đặt <strong>2 case</strong> → thực tế đã làm <strong>10 case</strong> (gấp 5 lần), trong đó <strong>Sapoche close có doanh thu</strong> và 7 case đang active.</div>
+      </div>
+    </div>
+  </div>
+  <div class="stat-row" style="margin-bottom:18px">
+    <div class="stat"><div class="stat-v sv-g">10/2</div><div class="stat-l">Case SE thực tế / timeline</div></div>
+    <div class="stat"><div class="stat-v sv-b">1</div><div class="stat-l">Win case (Sapoche)</div></div>
+    <div class="stat"><div class="stat-v sv-a">24h</div><div class="stat-l">Bảo trì VACs</div></div>
+    <div class="stat"><div class="stat-v sv-p">85%</div><div class="stat-l">Bài test đánh giá</div></div>
+  </div>
+
+  <div class="rv-2">
+    <div>
+      <div class="card-ti">Khó khăn & thách thức</div>
+      <div class="card">
+        <div class="ch-item"><div class="ch-ti">Chưa có kinh nghiệm — học từ đầu mọi bước</div><div class="ch-bd">Đến bước nào cũng phải tự tìm hiểu, học từ con số 0. Nhưng đây cũng chính là cơ hội: learning curve tăng rất nhanh trong 2 tháng. Kỳ vọng tiếp tục được học hỏi và phát triển.</div></div>
+        <div class="divider"></div>
+        <div class="ch-item"><div class="ch-ti">Base.vn API — không có docs đầy đủ</div><div class="ch-bd">access_token_v2 vs access_token, block_id trong webhook không phải block hiện tại — phải tự debug từng bước.</div></div>
+        <div class="divider"></div>
+        <div class="ch-item"><div class="ch-ti">n8n Siêm Riệp — phần khó nhất</div><div class="ch-bd">Truy xuất nguồn gốc cao su: pagination, node truncate, field name, whitespace gây duplicate. Cascade bug nối tiếp — đây là mảng cần được training thêm.</div></div>
+        <div class="divider"></div>
+        <div class="ch-item" style="margin-bottom:0"><div class="ch-ti">Jump in VACs giữa chừng</div><div class="ch-bd">Nhận bàn giao từ anh Thái Nguyễn, được support 1 tháng để quen → chính thức nhận full case, làm việc full với khách.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card-ti">Thành tựu nổi bật</div>
+      <div class="card">
+        <div class="ac-item"><div class="ac-ic" style="background:#eaf3de;color:#3b6d11">★</div><div class="ac-tx"><strong>Sapoche WON trong thử việc.</strong> Case đầu tiên close. Kiến trúc webhook→Sheet→Apps Script→web là approach mới.</div></div>
+        <div class="divider"></div>
+        <div class="ac-item"><div class="ac-ic" style="background:#e6f1fb;color:#185fa5">◈</div><div class="ac-tx"><strong>Vượt chỉ tiêu 5 lần.</strong> Timeline 2 case SE → làm 10 case, phủ 6 ngành khác nhau, mỗi case một kiến trúc riêng.</div></div>
+        <div class="divider"></div>
+        <div class="ac-item"><div class="ac-ic" style="background:#e1f5ee;color:#0f6e56">≡</div><div class="ac-tx"><strong>Build SKILL từ thực chiến.</strong> Sau Sapoche và PCES đều tổng hợp SKILL.md + case file — tài sản cho cả team.</div></div>
+        <div class="divider"></div>
+        <div class="ac-item" style="margin-bottom:0"><div class="ac-ic" style="background:#eeedfe;color:#534ab7">✓</div><div class="ac-tx"><strong>Verification discipline từ đầu.</strong> node --check + DOM stub + div balance — không để bug lọt ra bản giao khách.</div></div>
+      </div>
+      <div class="card" style="background:#e6f1fb;border-color:#378add;margin-top:14px">
+        <div style="font-size:11px;font-weight:700;color:#0c447c;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Feedback từ chị Huyền (SoE)</div>
+        <div style="font-size:13px;color:#042c53;line-height:1.7;font-style:italic">"Nó vượt ngoài kỳ vọng của chị rồi đấy =))) được được được. Chị Huyền trông ưng vc =))))))"</div>
+        <div style="font-size:11px;color:#185fa5;margin-top:6px">— nhận xét về demo báo cáo</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VĂN HÓA — CORE VALUE ═══ -->
+<div class="page" id="pg-culture">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Đánh giá độ phù hợp văn hóa</div>
+  <div class="hero-sub">Tự đánh giá theo core value — <strong>Result. No reason</strong></div>
+  <div class="cv-list">
+    <div class="card cv-card">
+      <div class="cv-head"><span class="cv-num">1</span><span class="cv-name">Tận tâm với khách hàng</span></div>
+      <div class="cv-body">Bước đầu tiếp cận và làm việc với khách: hỗ trợ hết sức. Đã xử lý 24h bảo trì VACs — trả lời câu hỏi, check dữ liệu, check refresh. Hướng dẫn khách chuẩn hóa cách nhập liệu để báo cáo lên chính xác. Demo vượt kỳ vọng (feedback chị Huyền).</div>
+    </div>
+    <div class="card cv-card">
+      <div class="cv-head"><span class="cv-num">2</span><span class="cv-name">Chính trực</span></div>
+      <div class="cv-body">Khi khách phản ánh sai/thiếu dữ liệu, kiểm tra trực tiếp và giải thích đúng nguyên nhân từ logic hệ thống và quy trình nhập liệu — không né tránh, không đổ lỗi, nói thẳng vấn đề nằm ở đâu.</div>
+    </div>
+    <div class="card cv-card">
+      <div class="cv-head"><span class="cv-num">3</span><span class="cv-name">Nhận trách nhiệm</span></div>
+      <div class="cv-body">Nhận bàn giao case từ anh Thái Nguyễn, sau 1 tháng support thì chính thức nhận full case và làm việc full với khách — không đùn đẩy. Debug đến khuya (2–5h sáng) để kịp giao đúng chất lượng.</div>
+    </div>
+    <div class="card cv-card">
+      <div class="cv-head"><span class="cv-num">4</span><span class="cv-name">Yêu thương & hỗ trợ đồng đội</span></div>
+      <div class="cv-body">Build các SKILL.md (demo-dashboard, case file) tổng hợp pattern từ thực chiến để cả team tái dùng — biến kinh nghiệm cá nhân thành tài sản chung. Học hỏi và hỗ trợ qua lại trong quá trình nhận bàn giao.</div>
+    </div>
+    <div class="card cv-card">
+      <div class="cv-head"><span class="cv-num">5</span><span class="cv-name">Không thỏa mãn với bản thân ở hiện tại</span></div>
+      <div class="cv-body">Workload còn ít → chủ động xin jump in thêm case. Chủ động nhận task ngoài phạm vi (làm báo giá Việt Minh Long, xin đi meeting gặp khách). Tự dựng verification harness, liên tục refine qua nhiều vòng thay vì giao bản đầu tiên.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MỤC TIÊU & ĐỀ XUẤT ═══ -->
+<div class="page" id="pg-goals">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Mục tiêu & Đề xuất</div>
+  <div class="hero-sub">Định hướng sau thử việc · nguồn lực cần</div>
+
+  <div class="card-ti">Đề xuất sau thử việc</div>
+  <div class="card" style="background:#eaf3de;border-color:#639922;margin-bottom:16px">
+    <div class="propose-row">
+      <div class="propose-item"><div class="propose-l">Đề xuất</div><div class="propose-v" style="color:#27500a">Lên Nhân viên chính thức</div></div>
+      <div class="propose-item"><div class="propose-l">Mức lương</div><div class="propose-v" style="color:#27500a">10.500.000đ (giữ mức offer)</div></div>
+      <div class="propose-item"><div class="propose-l">Phân bổ</div><div class="propose-v" style="color:#27500a">50% SE · 50% DA</div></div>
+    </div>
+  </div>
+
+  <div class="card-ti">Mục tiêu</div>
+  <div class="h3-row" style="grid-template-columns:1fr 1fr">
+    <div class="goal-c" style="border-top-color:#378add"><div class="g-hor" style="color:#185fa5">SE · 3 tháng</div><div class="g-ti">Tự chạy full luồng SE</div><div class="g-bd">Đủ vững để nhận case SE tự chạy full luồng với khách. Nhận và đóng góp trực tiếp vào KPI của toàn phòng.</div></div>
+    <div class="goal-c" style="border-top-color:#7f77dd"><div class="g-hor" style="color:#534ab7">DA · ngắn hạn</div><div class="g-ti">Triển khai case để học hỏi</div><div class="g-bd">Được triển khai các case triển khai thực tế để học hỏi và thực hành thêm — không chỉ làm pre-sales demo.</div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div style="font-size:12.5px;color:var(--ts);line-height:1.8">
+      <strong style="color:var(--t)">Tinh thần xuyên suốt:</strong> Làm việc vượt kỳ vọng · Chủ động xin nhận task để học hỏi · Liên tục phát triển bản thân.
+    </div>
+  </div>
+
+  <div class="card-ti">Nguồn lực cần</div>
+  <div class="res-grid">
+    <div class="res-card"><div class="res-ico" style="background:#e6f1fb;color:#185fa5">AI</div><div><div class="res-ti">Claude AI</div><div class="res-bd">Công cụ phục vụ công việc — dựng dashboard, debug, build skill, phân tích.</div></div></div>
+    <div class="res-card"><div class="res-ico" style="background:#e1f5ee;color:#0f6e56">↗</div><div><div class="res-ti">Tạo điều kiện jump in case triển khai</div><div class="res-bd">Được tham gia 1 case triển khai thực tế full cycle để học và thực hành.</div></div></div>
+    <div class="res-card"><div class="res-ico" style="background:#faeeda;color:#854f0b">⚙</div><div><div class="res-ti">Training thêm về n8n</div><div class="res-bd">Mảng workflow automation — build Siêm Riệp truy xuất nguồn gốc là phần khó nhất, cần được đào tạo sâu hơn.</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ ĐỜI SỐNG ═══ -->
+<div class="page" id="pg-life">
+  <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
+  <div class="hero-h">Đời sống tinh thần</div>
+  <div class="hero-sub">Thể thao · Bonding · Base Olympic</div>
+  <div class="life-2">
+    <div class="lc"><div class="lc-ico">🏸</div><div class="lc-ti">Base Olympic — Cầu lông</div><div class="lc-bd">Đánh cầu 1 lần/tuần suốt 2 tháng thử việc. Tham gia giải <strong>Base Olympic</strong> ở 2 hạng mục: <strong>Nam–Nữ</strong> và <strong>Nữ–Nữ</strong>. Lần đầu thi đấu format team mixing.</div></div>
+    <div class="lc"><div class="lc-ico">🍜</div><div class="lc-ti">2 tháng · 2 buổi bonding</div><div class="lc-bd">1 cùng nhóm DA External, 1 cùng toàn team Data. Hiểu văn hóa team nhanh hơn mọi tài liệu onboard — biết ai thích gì, đang làm gì, team đang đi đâu.</div></div>
+  </div>
+  <div class="quote-box">"3 tuần học · W4 bắt đầu chạy · T6 chạy full. Từ 7 app Base cần đọc đến 10 demo đã giao — mỗi case là một bài toán mới, mỗi bài toán là một lần hiểu sâu hơn về dữ liệu vận hành thực tế."</div>
+</div>
+
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goIntro(){
+  showPage('pg-intro');
+  document.getElementById('cases-list').style.display='block';
+  document.getElementById('case-detail').style.display='none';
+  document.getElementById('cases-back').onclick=()=>goIntro();
+}
+document.querySelectorAll('[data-go]').forEach(btn=>{
+  btn.onclick=()=>showPage(btn.getAttribute('data-go'));
+});
+
+var caseData=[
+  {num:'03',name:'Sapoche · Tóc Giả',type:'Sản xuất — phân công live',tags:['Live Data','n8n','Apps Script'],won:true,actions:['Thêm 2 node logging webhook_data vào Google Sheet (file Sapoche_Phancong_v3_webhookdata.json)','Debug get.all → get.detail để lấy current_ticket_block_id đúng cho tất cả tickets kể cả block 35094','Xác nhận access_token_v2 là param đúng — dùng access_token trả về access_token_invalid_2','Phát hiện splitInBatches gây mất data → xóa loop, dùng chaining trực tiếp (HTTP node auto-iterate)','Phân biệt Apps Script /exec (doPost/doGet) vs n8n webhook endpoint — tránh đi nhầm hướng','Tổng hợp kiến trúc webhook→Sheet→Apps Script→web thành SKILL.md demo-dashboard']},
+  {num:'04',name:'Moonlight · Thủy điện Nậm Na',type:'Holding 1 mẹ + 6 SPV thủy điện',tags:['HTML','PPTX','BSC'],won:false,actions:['Dựng dashboard_bao_cao_cong_ty_me_moonlight.html — dashboard tổng hợp công ty mẹ','Dựng bao_cao_tai_chinh_thuy_dien_moonlight.html — 4 trang: Doanh thu, Chi phí, Công nợ, Dòng tiền','Fix chart clipping bằng grace:"12%" + clip:false; split trang Công nợ thành 2 trang riêng','Dựng luong_van_hanh_nam_na.html — 7 luồng, 4 chế độ xem; đổi luồng 6 → "Công ca & Đánh giá hiệu suất"','Dựng dashboard_danh_gia_nhan_su_moonlight.html — BSC 4 khía cạnh, drill-down đơn vị → người','Build PPTX 12 slides bằng pptxgenjs, tông xanh business, nhúng link mở đường meeting']},
+  {num:'05',name:'PCES / P&C',type:'EMS — Gia công điện tử',tags:['Live+Demo','Base Service','Self-contained'],won:false,actions:['Dựng 3 file: PC_baocao_tonghop.html · PC_baocao_congviec.html · PC_index.html','Fix custName() tách đúng tên khách (dạng "Mã KH : X \\n Tên KH : Y")','Fix mapLive() gom theo ID ticket thay vì theo "Dự án" (tránh merge ticket không liên quan)','Fix stageOf thêm synonym "hoàn thành" → tỉ lệ đúng hạn từ 0% trở về đúng','Viết lại workload scheduler: forward capacity ≤8h/người/ngày, ưu tiên deadline gần, không dump tràn','Fix heatmap empHeat column alignment + renderCustBar crossAlign/grace; chip chẩn đoán 5 tình huống','Dựng 2 Excel survey docs pre-sales: process confirmation + data requirements (7 cột Tân Cảng)']},
+  {num:'06',name:'Nhậu Tự Do',type:'F&B — Chuỗi 17 cơ sở HN',tags:['Base WeWork','Checklist'],won:false,actions:['Dựng bep_tu_do_dashboard_v3.html — 3 tab: Tổng quan · Chi tiết cơ sở · Sự cố & Khiếu nại','Restructure nav từ topbar → left sidebar folder/tree, thu nhỏ dần xuống 184px','Strip severity badges, Điểm nóng panel, rank display (#16/17 cơ sở)','Merge 6 KPI cards vào 1 row; reorganize 3 chart từ 3-col → 2-col, Cảnh báo full-width','Hard rule xuyên suốt: zero emoji — CSS triangles + inline SVG thay thế ▲▼✓→','Verification mỗi turn: node --check + DOM-stub render + emoji scan + div balance']},
+  {num:'07',name:'Quán Nhỏ',type:'F&B — MMenu, không có IT team',tags:['MMenu','HR KPI'],won:false,actions:['Dựng QuanNho_Dashboard_Demo.html — 3 tab: Nhân sự · Hiệu quả & Tối ưu · KPI quản lý','Đổi font Segoe UI → Inter; iterate 2 lần palette: pastel (quá bệt) → vivid-but-controlled giữ brand red','Redesign scatter "Hiệu quả quản lý": retention (X) vs Doanh thu/giờ công (Y) với 4 quadrant','Top ca hiệu quả cao/thấp horizontal bar; KPI table → grouped bar+line chart','Dựng verification harness: Python brace check + node --check + node smoke.js (Chart.js DOM stub)','Fix off-by-one brace trong scatter3 inline-plugin config (options đóng trước plugin array)']},
+  {num:'08',name:'Việt Minh Long (VML)',type:'Sản xuất — Cửa nhôm kính cao cấp',tags:['3 deliverables','Báo giá'],won:false,actions:['Dựng VML_BaoCao_TienDo_Demo.html — KPI 1 row, Tổng giá trị HĐ block teal nổi bật, sticky thead','Dựng VML_BaoCao_TaiChinh.html — merge 2 tab DT→1, contract table expand/collapse 3 nhóm cột, Công nợ split 3 tab','Dựng VML_SoHoa_ThiCong_SanXuat.html — 12 quy trình Service, stripped toàn bộ Apps Script live UI → static','Build VML_BaoGia_2BaoCao.xlsx từ ECV Corp template (Barlow, navy #0A3761): 2 báo cáo 15+12 ngày','Custom toàn bộ data sang ngành nhôm kính: nhôm Xingfa/Maxpro, kính, phụ kiện Kinlong, máy CNC','Pitfall xác nhận: CSS anchor trên ref_style.css silently fail → luôn anchor string inline trong build_app2.py']},
+  {num:'09',name:'KOMEX',type:'TMĐT — Camera, Shopee + TikTok Shop',tags:['TMĐT','Shopee','TikTok'],won:false,actions:['Dựng index.html (~90KB) — 3 trang: Vận hành · Hoàn trả&Bảo hành · Đánh giá khách hàng','Switch topbar → fixed 238px deep-navy vertical sidebar','Split "Hậu mãi" → 3 sub-tab: Khiếu nại (default) / Hoàn trả / Bảo hành','Thêm orderLink() linkify mã đơn → Shopee Seller Center hoặc TikTok Shop Seller theo prefix','Filter migrate vào sidebar buildSideFilter() với global state + topbar banner active filter','Debt aging → Chart.js bar; health matrix + tier table .dcard expandable với sticky header']},
+  {num:'10',name:'Siêm Riệp · Cao su',type:'EUDR — Truy xuất nguồn gốc PEFC CoC',tags:['EUDR','n8n','Truy xuất'],won:false,actions:['Thiết kế 11 Base Table: 3 master (Tổ, Lô đất, KH) + 5 chuỗi (A→B→C→D→XK) + 3 junction many-to-many có kèm lượng','Fix pagination: Base mặc định 20 records, page param ignore → dùng limit=1000','Fix node name truncation sau khi paste bundle vào n8n → toàn bộ $("node name") reference vỡ','Fix field name custom_gom_lo_ma_a → custom_gom_lo; node "Tính trừ tồn" khớp byName[p.ma_b] thay vì id','Fix whitespace mã A gây false "not found" → duplicate rows. Thêm norm() strip + "ĐÃ GOM |" prefix','Fix dedup seenRoot: root_id="0" falsy → kiểm tra rid!=="0" tường minh → total_processed đúng 100']},
+  {num:'01',name:'ECV Corp',type:'Nhà thầu xây dựng + Khoáng sản',tags:['Power BI ref'],won:false,actions:['Dựng blueprint dashboard 4 trang: Tổng quan · Doanh thu · Chi phí · Công nợ','Heatmap công trình × tháng, run-rate forecast, drill-down VTTB','File HTML + CSS template được tái dùng làm base cho Moonlight và VML sau này']},
+  {num:'02',name:'AHS Property',type:'Nhân sự — Quản lý lương & hiệu suất',tags:['Power BI ref','RLS'],won:false,actions:['Dashboard 2 trang: bar chart 6 loại đối tượng lương, donut phân bổ, phiếu lương lookup','Logic 5 bước inline giải thích cách tính; lọc thời gian theo tháng/quý/năm','RLS (Row Level Security) 3 cấp — mỗi cấp thấy phạm vi data khác nhau']}
+];
+
+function pillHtml(tags){return tags.map(function(t){return '<span class="pill p-gr">'+t+'</span>'}).join(' ')}
+
+function renderGrid(){
+  var order=[0,1,2,3,4,5,6,7,8,9];
+  var grid=document.getElementById('case-grid');
+  grid.innerHTML=order.map(function(i){
+    var d=caseData[i];
+    var items=d.actions.slice(0,2).map(function(a){var s=a.length>52?a.slice(0,50)+'…':a;return '<li>'+s+'</li>'}).join('');
+    return '<div class="cc'+(d.won?' won':'')+'" onclick="showCase('+i+')">'+
+      '<div class="cc-num">'+d.num+' · '+d.name.split(' · ')[0]+(d.won?' <span class="won-b">WON</span>':'')+'</div>'+
+      '<div class="cc-name">'+d.name+'</div>'+
+      '<div class="cc-type">'+d.type+'</div>'+
+      '<ul class="cc-items">'+items+'</ul>'+
+      '<div class="cc-ft">'+pillHtml(d.tags.slice(0,2))+'</div></div>';
+  }).join('');
+}
+renderGrid();
+
+function showCase(i){
+  var d=caseData[i];
+  document.getElementById('cases-list').style.display='none';
+  var det=document.getElementById('case-detail');
+  det.style.display='block';
+  det.innerHTML=
+    '<div class="cd-header"><div class="cd-name">'+(d.won?'<span class="won-b" style="margin-right:8px">WON</span>':'')+d.name+'</div>'+
+    '<div class="cd-meta">Case '+d.num+' · '+d.type+'<br><span style="display:inline-block;margin-top:6px">'+pillHtml(d.tags)+'</span></div></div>'+
+    '<div class="card-ti">Actions thực tế đã làm</div>'+
+    '<ul class="action-list">'+d.actions.map(function(a){return '<li>'+a+'</li>'}).join('')+'</ul>';
+  document.getElementById('cases-back').onclick=function(){
+    document.getElementById('cases-list').style.display='block';
+    det.style.display='none';
+    det.innerHTML='';
+    document.getElementById('cases-back').onclick=function(){goIntro()};
+    window.scrollTo(0,0);
+  };
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
