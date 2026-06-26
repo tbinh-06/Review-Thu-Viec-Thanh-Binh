@@ -94,6 +94,30 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--t)
 .link-btn.alt:hover{background:#e6f1fb}
 .cc-link-dot{font-size:10px;color:#1d9e75;font-weight:700}
 
+/* SEGMENT TABS */
+.seg-tabs{display:inline-flex;background:var(--bg2);border-radius:9px;padding:3px;margin-bottom:18px;gap:2px}
+.seg-tab{border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--ts);padding:7px 18px;border-radius:7px;cursor:pointer;transition:all .15s}
+.seg-tab.active{background:#fff;color:#185fa5;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* SCORING */
+.score-summary{display:flex;align-items:center;gap:16px;background:#e6f1fb;border:0.5px solid #378add;border-radius:12px;padding:18px 20px;margin-bottom:18px}
+.score-big{font-size:38px;font-weight:800;color:#185fa5;line-height:1}
+.score-big span{font-size:18px;color:#6b6960;font-weight:600}
+.score-cap{font-size:12.5px;color:#0c447c;line-height:1.5}
+.score-item{margin-bottom:16px}
+.score-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.score-name{font-size:13.5px;font-weight:700}
+.score-desc{font-size:11.5px;color:var(--ts);font-weight:400;display:block;margin-top:1px}
+.score-val{font-size:16px;font-weight:800;color:#185fa5;min-width:28px;text-align:right}
+.score-slider{width:100%;-webkit-appearance:none;appearance:none;height:7px;border-radius:4px;background:linear-gradient(90deg,#378add var(--pct,70%),#e5e3dc var(--pct,70%));outline:none;cursor:pointer}
+.score-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#185fa5;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+.score-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#185fa5;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+.score-reset{background:#fff;border:0.5px solid var(--b);border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;color:var(--ts);padding:8px 14px;cursor:pointer;margin-top:4px}
+.score-reset:hover{background:var(--bg2)}
+.intro-note{display:flex;align-items:center;gap:14px;background:#faf9f7;border:0.5px solid var(--b);border-radius:10px;padding:16px 20px;margin:24px 0 18px;font-size:14px;font-weight:600;color:var(--t)}
+.intro-note-ic{width:32px;height:32px;border-radius:50%;background:#185fa5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
 .hrs-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
 .hb{background:var(--surface);border:0.5px solid var(--b);border-radius:8px;padding:16px;text-align:center}
 .hv{font-size:26px;font-weight:800}
@@ -173,6 +197,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--t)
 .t-coral{border-color:#d85a30;color:#712b13} .t-green{border-color:#639922;color:#27500a}
 .t-gray{border-color:#888780;color:#444441}
 .t-pink{border-color:#c0428a;color:#8a2560}
+.t-purple{border-color:#7f77dd;color:#3c3489}
 
 /* SUB-TREE cấp 2 từ Hành trình */
 .tree-sub-wrap{position:relative;margin-top:30px;padding-top:24px}
@@ -236,7 +261,19 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--t)
     <div class="ov-item"><div class="ov-n">Định hướng</div><div class="ov-d">Ngắn hạn: lặp win case. Dài hạn: tự chạy full SE. Trước mắt 50% DA — 50% SE.</div></div>
   </div>
 
-  <div class="map-hint" style="margin:24px 0 4px">Click vào từng nhánh để xem chi tiết</div>
+  <!-- TỰ CHẤM ĐIỂM -->
+  <div class="card-ti" style="margin-top:24px">Tự chấm điểm bản thân <span style="font-weight:400;color:var(--ts);text-transform:none;letter-spacing:0">· 8 tiêu chí · thang 1–10 · kéo slider</span></div>
+  <div class="score-summary">
+    <div class="score-big" id="score-avg">8.1<span>/10</span></div>
+    <div class="score-cap">Điểm trung bình tự đánh giá<br><span id="score-note" style="color:#185fa5;font-weight:600">Tự tin với hành trình thử việc</span></div>
+  </div>
+  <div class="card" id="score-list"></div>
+
+  <div class="intro-note">
+    <div class="intro-note-ic">↓</div>
+    <div>Anh chị theo dõi hành trình và kết quả chi tiết dưới đây.<br><span style="color:var(--ts);font-weight:400">Click vào từng nhánh để xem chi tiết.</span></div>
+  </div>
+
   <div class="tree-wrap" id="tree">
     <div class="tree-root">
       <button class="tnode troot">2 tháng thử việc</button>
@@ -262,61 +299,71 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--t)
 <!-- ═══ HÀNH TRÌNH ═══ -->
 <div class="page" id="pg-tl">
   <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
-  <div class="hero-h">Hành trình theo tuần</div>
-  <div class="hero-sub">04/05/2026 → 03/07/2026 · 53 ngày làm (T2–T7)</div>
-  <div class="stat-row">
-    <div class="stat"><div class="stat-v sv-b">53</div><div class="stat-l">Ngày làm</div></div>
-    <div class="stat"><div class="stat-v sv-g">4</div><div class="stat-l">Giai đoạn</div></div>
-    <div class="stat"><div class="stat-v sv-a">W4</div><div class="stat-l">Jump in dự án</div></div>
+  <div class="hero-h">Hành trình thử việc</div>
+  <div class="seg-tabs">
+    <button class="seg-tab active" id="seg-timeline" onclick="switchTL('timeline')">Timeline</button>
+    <button class="seg-tab" id="seg-tongket" onclick="switchTL('tongket')">Tổng kết giờ làm</button>
   </div>
-  <div class="card">
-    <div class="tl">
-      <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W1 · 4–9/5</div><div class="tl-ti">Onboard & nền tảng</div><div class="tl-bd">Thiết lập môi trường (Power BI, Ultra, TeamViewer). Tự đọc 7 sản phẩm Base — Wework, Timeoff, HRM, Service, Request, Hiring, Account — nắm data model, văn hóa team, cơ chế com.</div><div><span class="tag">7 Base Apps</span><span class="tag">Data Model</span><span class="tag">Onboard</span></div></div>
-      <div class="tl-item"><div class="tl-dot d-g"></div><div class="tl-wk">W2–W3 · 11–22/5</div><div class="tl-ti">Bài toán Hiệu suất Công việc</div><div class="tl-bd">Data mapping → Canva process map → Blueprint báo cáo → Trình bày insight → Power BI hoàn chỉnh. Bài test đánh giá đạt 85%.</div><div><span class="tag">Power BI</span><span class="tag">Blueprint</span><span class="pill p-g">85% test</span></div></div>
-      <div class="tl-item"><div class="tl-dot d-a"></div><div class="tl-wk">W4 · 25–30/5</div><div class="tl-ti">Jump in — Nhận VACs & demo đầu tiên</div><div class="tl-bd">Bàn giao VACs (Hudland, VCAS). Đọc blueprint, map dữ liệu WeWork/HRM/TimeOff/BigQuery/PBI, nắm công thức. Song song bắt đầu ECV & AHS.</div><div><span class="tag">VACs</span><span class="tag">ECV</span><span class="tag">AHS</span></div></div>
-      <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W5–W9 · 1–25/6</div><div class="tl-ti">Triển khai 8 demo + VACs live</div><div class="tl-bd">Cường độ cao nhất: Sapoche, Moonlight, PCES, Nhậu Tự Do, Quán Nhỏ, KOMEX, VML, Siêm Riệp — song song xử lý VACs thực tế (mismatch, query, đối soát BigQuery/PBI).</div><div><span class="tag">HTML+Chart.js</span><span class="tag">n8n</span><span class="tag">Base.vn API</span></div></div>
+
+  <div id="tl-timeline">
+    <div class="hero-sub" style="margin-bottom:14px">04/05/2026 → 03/07/2026 · 53 ngày làm (T2–T7)</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-v sv-b">53</div><div class="stat-l">Ngày làm</div></div>
+      <div class="stat"><div class="stat-v sv-g">4</div><div class="stat-l">Giai đoạn</div></div>
+      <div class="stat"><div class="stat-v sv-a">W4</div><div class="stat-l">Jump in dự án</div></div>
+    </div>
+    <div class="card">
+      <div class="tl">
+        <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W1 · 4–9/5</div><div class="tl-ti">Onboard & nền tảng</div><div class="tl-bd">Thiết lập môi trường (Power BI, Ultra, TeamViewer). Tự đọc 7 sản phẩm Base — Wework, Timeoff, HRM, Service, Request, Hiring, Account — nắm data model, văn hóa team, cơ chế com.</div><div><span class="tag">7 Base Apps</span><span class="tag">Data Model</span><span class="tag">Onboard</span></div></div>
+        <div class="tl-item"><div class="tl-dot d-g"></div><div class="tl-wk">W2–W3 · 11–22/5</div><div class="tl-ti">Bài toán Hiệu suất Công việc</div><div class="tl-bd">Data mapping → Canva process map → Blueprint báo cáo → Trình bày insight → Power BI hoàn chỉnh. Bài test đánh giá đạt 85%.</div><div><span class="tag">Power BI</span><span class="tag">Blueprint</span><span class="pill p-g">85% test</span></div></div>
+        <div class="tl-item"><div class="tl-dot d-a"></div><div class="tl-wk">W4 · 25–30/5</div><div class="tl-ti">Jump in — Nhận VACs & demo đầu tiên</div><div class="tl-bd">Bàn giao VACs (Hudland, VCAS). Đọc blueprint, map dữ liệu WeWork/HRM/TimeOff/BigQuery/PBI, nắm công thức. Song song bắt đầu ECV & AHS.</div><div><span class="tag">VACs</span><span class="tag">ECV</span><span class="tag">AHS</span></div></div>
+        <div class="tl-item"><div class="tl-dot d-b"></div><div class="tl-wk">W5–W9 · 1–25/6</div><div class="tl-ti">Triển khai 8 demo + VACs live</div><div class="tl-bd">Cường độ cao nhất: Sapoche, Moonlight, PCES, Nhậu Tự Do, Quán Nhỏ, KOMEX, VML, Siêm Riệp — song song xử lý VACs thực tế (mismatch, query, đối soát BigQuery/PBI).</div><div><span class="tag">HTML+Chart.js</span><span class="tag">n8n</span><span class="tag">Base.vn API</span></div></div>
+      </div>
     </div>
   </div>
 
-  <div class="card-ti" style="margin-top:18px">Tổng kết giờ làm việc</div>
-  <div class="hero-sub" style="margin-bottom:14px">8h30–18h00 · nghỉ trưa 1h30 · T2–T7 · OT = sau 18h hoặc Chủ nhật</div>
-<div class="hrs-3">
-    <div class="hb"><div class="hv sv-b">424h</div><div class="hl">Hành chính<br>53 ngày × 8h</div></div>
-    <div class="hb" style="border-color:#ba7517"><div class="hv sv-a">32.5h</div><div class="hl">Tăng ca (OT)<br>Meeting 9h · Thực tế 23.5h</div></div>
-    <div class="hb" style="border-color:#639922"><div class="hv sv-g">456.5h</div><div class="hl">Tổng thực tế<br>≈ 57 ngày công</div></div>
-  </div>
-  <div class="card-ti">OT Meeting — Google Calendar</div>
-  <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
-    <table class="mt"><thead><tr><th>Ngày</th><th>Event</th><th style="text-align:right">Giờ</th></tr></thead><tbody>
-      <tr><td>T7 6/6</td><td>ECV × Base Meeting 04 Khảo sát công lượng</td><td style="text-align:right">2.5h</td></tr>
-      <tr><td>T7 6/6</td><td>Catchup đêm (10–11PM)</td><td style="text-align:right">1h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
-      <tr><td>CN 14/6</td><td>Product Demo + Moonlight catchup research</td><td style="text-align:right">2h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
-      <tr><td>T3–T6 16–19/6</td><td>Thanh Bình/Yến · Demo Session 2 · Demo T6</td><td style="text-align:right">3h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
-      <tr><td>T7 20/6</td><td>Siêm Riệp Truy xuất nguồn gốc (9:30AM)</td><td style="text-align:right">1.5h</td></tr>
-      <tr><td>CN 21/6</td><td>Catchup Việt Minh Long (5:30PM)</td><td style="text-align:right">1h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
-      <tr><td>T5–T6 25–26/6</td><td>Product Demo · Siêm Riệp demo nội bộ đêm</td><td style="text-align:right">2h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
-      <tr><td>T7 27/6</td><td>ECV × Base Meeting 05 Thống nhất giải pháp</td><td style="text-align:right">2h</td></tr>
-    </tbody></table>
-  </div>
-  <div class="card-ti">OT Làm việc thực tế — Timestamp lịch sử chat</div>
-  <div class="card" style="padding:0;overflow:hidden">
-    <table class="mt"><thead><tr><th>Case</th><th>Dấu hiệu OT</th><th style="text-align:right">Ước tính</th></tr></thead><tbody>
-      <tr><td>Siêm Riệp</td><td>Debug n8n đến 5AM (timestamp 05:01+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
-      <tr><td>Sapoche</td><td>Nhiều session debug webhook tối muộn</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
-      <tr><td>Moonlight</td><td>Catchup research 9–10PM</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
-      <tr><td>PCES</td><td>Session kéo dài đến 2AM (02:22+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
-      <tr><td>VML</td><td>Build dashboard đêm (02:57+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
-      <tr><td>Quán Nhỏ</td><td>Build đêm muộn (03:42+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2.5h</td></tr>
-      <tr><td>KOMEX</td><td>Build dashboard tối muộn (01:54+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
-      <tr><td>Nhậu Tự Do</td><td>Refine UI buổi tối nhiều vòng lặp</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
-    </tbody></table>
+  <div id="tl-tongket" style="display:none">
+    <div class="hero-sub" style="margin-bottom:14px">8h30–18h00 · nghỉ trưa 1h30 · T2–T7 · OT = sau 18h hoặc Chủ nhật</div>
+    <div class="hrs-3">
+      <div class="hb"><div class="hv sv-b">424h</div><div class="hl">Hành chính<br>53 ngày × 8h</div></div>
+      <div class="hb" style="border-color:#ba7517"><div class="hv sv-a">32.5h</div><div class="hl">Tăng ca (OT)<br>Meeting 9h · Thực tế 23.5h</div></div>
+      <div class="hb" style="border-color:#639922"><div class="hv sv-g">456.5h</div><div class="hl">Tổng thực tế<br>≈ 57 ngày công</div></div>
+    </div>
+    <div class="card-ti">OT Meeting — Google Calendar</div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+      <table class="mt"><thead><tr><th>Ngày</th><th>Event</th><th style="text-align:right">Giờ</th></tr></thead><tbody>
+        <tr><td>T7 6/6</td><td>ECV × Base Meeting 04 Khảo sát công lượng</td><td style="text-align:right">2.5h</td></tr>
+        <tr><td>T7 6/6</td><td>Catchup đêm (10–11PM)</td><td style="text-align:right">1h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+        <tr><td>CN 14/6</td><td>Product Demo + Moonlight catchup research</td><td style="text-align:right">2h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
+        <tr><td>T3–T6 16–19/6</td><td>Thanh Bình/Yến · Demo Session 2 · Demo T6</td><td style="text-align:right">3h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+        <tr><td>T7 20/6</td><td>Siêm Riệp Truy xuất nguồn gốc (9:30AM)</td><td style="text-align:right">1.5h</td></tr>
+        <tr><td>CN 21/6</td><td>Catchup Việt Minh Long (5:30PM)</td><td style="text-align:right">1h <span class="pill p-c" style="font-size:10px">CN</span></td></tr>
+        <tr><td>T5–T6 25–26/6</td><td>Product Demo · Siêm Riệp demo nội bộ đêm</td><td style="text-align:right">2h <span class="pill p-a" style="font-size:10px">OT</span></td></tr>
+        <tr><td>T7 27/6</td><td>ECV × Base Meeting 05 Thống nhất giải pháp</td><td style="text-align:right">2h</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card-ti">OT Làm việc thực tế — Timestamp lịch sử chat</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="mt"><thead><tr><th>Case</th><th>Dấu hiệu OT</th><th style="text-align:right">Ước tính</th></tr></thead><tbody>
+        <tr><td>Siêm Riệp</td><td>Debug n8n đến 5AM (timestamp 05:01+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
+        <tr><td>Sapoche</td><td>Nhiều session debug webhook tối muộn</td><td style="text-align:right;color:#854f0b;font-weight:700">~4h</td></tr>
+        <tr><td>Moonlight</td><td>Catchup research 9–10PM</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+        <tr><td>PCES</td><td>Session kéo dài đến 2AM (02:22+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+        <tr><td>VML</td><td>Build dashboard đêm (02:57+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~3h</td></tr>
+        <tr><td>Quán Nhỏ</td><td>Build đêm muộn (03:42+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2.5h</td></tr>
+        <tr><td>KOMEX</td><td>Build dashboard tối muộn (01:54+07)</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
+        <tr><td>Nhậu Tự Do</td><td>Refine UI buổi tối nhiều vòng lặp</td><td style="text-align:right;color:#854f0b;font-weight:700">~2h</td></tr>
+      </tbody></table>
+    </div>
   </div>
 </div>
+
 <!-- ═══ VACs ═══ -->
 <div class="page" id="pg-vacs">
   <button class="back-btn" onclick="goIntro()">← Quay lại tổng quan</button>
   <div class="hero-h">Triển khai DA — Dự án VACs</div>
   <div class="hero-sub">Tiếp nhận giữa kỳ thử việc · 24 giờ bảo trì · xử lý song song pre-sales</div>
+  <div class="link-row"><a class="link-btn" href="https://docs.google.com/spreadsheets/d/1Voxq6C6xsgdCCAYDsGmH6vvyuLlKz0saOAdh49bxlt0/edit?gid=0#gid=0" target="_blank" rel="noopener">↗ Mở báo cáo VACs</a></div>
   <div class="vacs-2">
     <div class="card"><div class="card-ti">Kỹ thuật & Hệ thống</div><ul class="vl">
       <li>Bổ sung Sản phẩm, Địa danh, PM, văn phòng DNA/HUE/HCM vào dữ liệu dự án</li>
@@ -480,6 +527,62 @@ function goIntro(){
 document.querySelectorAll('[data-go]').forEach(btn=>{
   btn.onclick=()=>showPage(btn.getAttribute('data-go'));
 });
+
+// Hành trình tabs
+function switchTL(which){
+  var t=document.getElementById('tl-timeline'), k=document.getElementById('tl-tongket');
+  var st=document.getElementById('seg-timeline'), sk=document.getElementById('seg-tongket');
+  if(which==='timeline'){t.style.display='block';k.style.display='none';st.classList.add('active');sk.classList.remove('active');}
+  else{t.style.display='none';k.style.display='block';sk.classList.add('active');st.classList.remove('active');}
+}
+
+// Tự chấm điểm
+var scoreCriteria=[
+  {name:'Hòa nhập',     desc:'Thích nghi môi trường, văn hóa, đồng đội',          val:9},
+  {name:'Chủ động',     desc:'Tự xin việc, jump in case, nhận task ngoài phạm vi', val:9},
+  {name:'Học hỏi',      desc:'Tốc độ tiếp thu, learning curve trong 2 tháng',     val:8},
+  {name:'Chuyên môn',   desc:'Kỹ năng làm dashboard, data, n8n, Base.vn',          val:7},
+  {name:'Chất lượng',   desc:'Độ chỉn chu sản phẩm giao, ít lỗi',                  val:8},
+  {name:'Khách hàng',   desc:'Giao tiếp, hỗ trợ, làm việc với khách',              val:8},
+  {name:'Trách nhiệm',  desc:'Cam kết với task, sẵn sàng OT để kịp giao',          val:9},
+  {name:'Tự nhận thức', desc:'Hiểu điểm mạnh/yếu, biết cần training thêm gì',      val:7}
+];
+var defaultScores=scoreCriteria.map(function(c){return c.val});
+
+function renderScores(){
+  var list=document.getElementById('score-list');
+  list.innerHTML=scoreCriteria.map(function(c,i){
+    var pct=(c.val/10*100);
+    return '<div class="score-item">'+
+      '<div class="score-head"><div><span class="score-name">'+c.name+'</span>'+
+      '<span class="score-desc">'+c.desc+'</span></div>'+
+      '<span class="score-val" id="sv-'+i+'">'+c.val+'</span></div>'+
+      '<input type="range" min="1" max="10" step="1" value="'+c.val+'" class="score-slider" id="ss-'+i+'" '+
+      'style="--pct:'+pct+'%" oninput="onScore('+i+',this.value)"/></div>';
+  }).join('');
+  updateAvg();
+}
+function onScore(i,v){
+  v=parseInt(v); scoreCriteria[i].val=v;
+  document.getElementById('sv-'+i).textContent=v;
+  document.getElementById('ss-'+i).style.setProperty('--pct',(v/10*100)+'%');
+  updateAvg();
+}
+function updateAvg(){
+  var sum=scoreCriteria.reduce(function(a,c){return a+c.val},0);
+  var avg=(sum/scoreCriteria.length).toFixed(1);
+  document.getElementById('score-avg').innerHTML=avg+'<span>/10</span>';
+  var note=document.getElementById('score-note');
+  if(avg>=8.5) note.textContent='Hành trình thử việc rất tốt';
+  else if(avg>=7) note.textContent='Tự tin với hành trình thử việc';
+  else if(avg>=5.5) note.textContent='Có nền tảng, còn nhiều dư địa phát triển';
+  else note.textContent='Cần cố gắng nhiều hơn';
+}
+function resetScores(){
+  scoreCriteria.forEach(function(c,i){c.val=defaultScores[i]});
+  renderScores();
+}
+renderScores();
 
 var caseData=[
   {num:'03',name:'Sapoche · Tóc Giả',type:'Sản xuất — phân công live',tags:['Live Data','n8n','Apps Script'],won:true,links:[['Dashboard chạy webhook','https://tbinh-06.github.io/Sapoche_SanLuong_v1/'],['Webhook Google Sheet','https://docs.google.com/spreadsheets/d/1VTw5LSPkkBJiVJC1jGGm4C6jGFbU_njniO7ncLt1O6A/edit?gid=0#gid=0']],actions:['Thêm 2 node logging webhook_data vào Google Sheet (file Sapoche_Phancong_v3_webhookdata.json)','Debug get.all → get.detail để lấy current_ticket_block_id đúng cho tất cả tickets kể cả block 35094','Xác nhận access_token_v2 là param đúng — dùng access_token trả về access_token_invalid_2','Phát hiện splitInBatches gây mất data → xóa loop, dùng chaining trực tiếp (HTTP node auto-iterate)','Phân biệt Apps Script /exec (doPost/doGet) vs n8n webhook endpoint — tránh đi nhầm hướng','Tổng hợp kiến trúc webhook→Sheet→Apps Script→web thành SKILL.md demo-dashboard']},
